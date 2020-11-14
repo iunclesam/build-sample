@@ -4,7 +4,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 var less = require("gulp-less");
-var cleanCss = require("gulp-clean-css");
+var cssClean = require("gulp-clean-css");
 
 // 注册任务
 // gulp.task('任务名', function () {
@@ -25,6 +25,15 @@ gulp.task('less', function () {
     return gulp.src('src/less/*.less')
         .pipe(less())
         .pipe(gulp.dest('src/css'))
+});
+
+// 注册合并压缩css文件
+gulp.task('css', function () {
+   return gulp.src('src/css/*.css')
+       .pipe(concat('build.css'))
+       .pipe(rename({suffix: '.min'}))
+       .pipe(cssClean({compatibility: 'ie8'}))
+       .pipe(gulp.dest('dist/css/'));
 });
 
 // 注册默认任务
