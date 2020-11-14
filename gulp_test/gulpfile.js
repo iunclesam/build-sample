@@ -5,6 +5,7 @@ var uglify = require('gulp-uglify');
 var rename = require("gulp-rename");
 var less = require("gulp-less");
 var cssClean = require("gulp-clean-css");
+var htmlMin = require("gulp-htmlmin");
 
 // 注册任务
 // gulp.task('任务名', function () {
@@ -36,5 +37,12 @@ gulp.task('css', ['less'],function () {
        .pipe(gulp.dest('dist/css/'));
 });
 
+// 注册压缩html的任务
+gulp.task('html', function () {
+    return gulp.src('index.html')
+        .pipe(htmlMin({collapseWhitespace:true}))
+        .pipe(gulp.dest('dist/'));
+})
+
 // 注册默认任务
-gulp.task('default',  ['js', 'less', 'css']);
+gulp.task('default',  ['js', 'less', 'css', 'html']);
