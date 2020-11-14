@@ -6,6 +6,7 @@ var rename = require("gulp-rename");
 var less = require("gulp-less");
 var cssClean = require("gulp-clean-css");
 var htmlMin = require("gulp-htmlmin");
+var livereload = require("gulp-livereload");
 
 // 注册任务
 // gulp.task('任务名', function () {
@@ -20,12 +21,14 @@ gulp.task('js', function () {
         .pipe(uglify()) // 压缩文件
         .pipe(rename({suffix: '.min'})) // 重命名
         .pipe(gulp.dest('dist/js/'))
+        .pipe(livereload())
 });
 
 gulp.task('less', function () {
     return gulp.src('src/less/*.less')
         .pipe(less())
         .pipe(gulp.dest('src/css'))
+        .pipe(livereload())
 });
 
 // 注册合并压缩css文件
@@ -34,15 +37,26 @@ gulp.task('css', ['less'],function () {
        .pipe(concat('build.css'))
        .pipe(rename({suffix: '.min'}))
        .pipe(cssClean({compatibility: 'ie8'}))
-       .pipe(gulp.dest('dist/css/'));
+       .pipe(gulp.dest('dist/css/'))
+       .pipe(livereload())
 });
 
 // 注册压缩html的任务
 gulp.task('html', function () {
     return gulp.src('index.html')
         .pipe(htmlMin({collapseWhitespace:true}))
-        .pipe(gulp.dest('dist/'));
-})
+        .pipe(gulp.dest('dist/'))
+        .pipe(livereload())
+});
+
+// 注册监听任务
+gulp.task('watch', ['default'], function () {
+    // 开启监听
+    livereload.listen();
+    // 确认监听的目标以及绑定相应的任务
+    gulp.watch('src/js/*.js', ['js']);
+    gulp.watch(['src/css/*.css', 'src/less/*.less'], ['css']);
+});
 
 // 注册默认任务
 gulp.task('default',  ['js', 'less', 'css', 'html']);
