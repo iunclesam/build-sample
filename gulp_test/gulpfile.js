@@ -28,7 +28,7 @@ gulp.task('less', function () {
 });
 
 // 注册合并压缩css文件
-gulp.task('css', function () {
+gulp.task('css', ['less'],function () {
    return gulp.src('src/css/*.css')
        .pipe(concat('build.css'))
        .pipe(rename({suffix: '.min'}))
@@ -37,6 +37,4 @@ gulp.task('css', function () {
 });
 
 // 注册默认任务
-gulp.task('default', function () {
-    
-});
+gulp.task('default',  ['js', 'less', 'css']);
