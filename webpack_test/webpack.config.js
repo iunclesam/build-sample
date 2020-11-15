@@ -4,7 +4,7 @@ module.exports = {
     entry: './src/js/entry.js', // 入口文件的位置
     output: {                   // 出口/输出的配置
         filename: 'bundle.js',   // 输出文件名
-        publicPath: 'js/',
+        // publicPath: 'js/',
         path: path.resolve(__dirname, 'dist/js'),
     },
     module: {
@@ -28,5 +28,8 @@ module.exports = {
                 ]
             }
         ]
+    },
+    devServer: {
+        contentBase: './dist'
     }
 };
